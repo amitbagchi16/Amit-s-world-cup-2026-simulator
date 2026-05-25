@@ -6,7 +6,7 @@ import streamlit as st
 
 
 # ============================================================
-# FIFA World Cup 2026 Interactive Simulator
+# FIFA World Cup 2026 Prediction
 # Stable Local Version
 #
 # Required minimum file:
@@ -18,16 +18,44 @@ import streamlit as st
 
 
 st.set_page_config(
-    page_title="World Cup 2026 Interactive Simulator",
+    page_title="FIFA World Cup 2026 Prediction & Interactive Simulation",
     layout="wide"
 )
 
-st.title("FIFA World Cup 2026 Interactive Simulator")
-st.caption(
-    "Edit group-stage results, update group tables, generate Round of 32 qualifiers, "
-    "simulate knockout rounds, and manually change winners."
+st.title("FIFA World Cup 2026 Prediction & Interactive Simulation")
+st.captionst.caption(
+    "An interactive prediction and scenario simulation tool for exploring FIFA World Cup 2026 outcomes."
 )
 
+st.info(
+    "This app allows users to explore possible FIFA World Cup 2026 outcomes using data-driven predictions "
+    "and interactive scenario testing. Users can update match results, check revised group tables, "
+    "generate knockout paths, and observe how the predicted champion changes."
+)
+
+with st.expander("Why this matters"):
+    st.write(
+        """
+        Large sporting events create uncertainty for fans, media platforms, sponsors, advertisers, and merchandise sellers. 
+        A prediction simulator can help users understand how tournament outcomes may change as real results become available.
+
+        For example, before the tournament, a team may appear as a likely champion based on available data. 
+        After each match, updated results can change the group ranking, knockout path, and final prediction. 
+        This makes the tool useful not only for football analysis, but also for scenario-based planning.
+        """
+    )
+
+with st.expander("How to use this app"):
+    st.write(
+        """
+        1. Start with the initial model-based prediction.
+        2. Go to the Group Stage Editor.
+        3. Enter actual results or manual what-if scores.
+        4. Check the updated group tables and Round of 32 qualifiers.
+        5. Review the knockout bracket and predicted champion.
+        6. Export the simulation result if needed.
+        """
+    )
 
 # ============================================================
 # Helper: find files by prefix

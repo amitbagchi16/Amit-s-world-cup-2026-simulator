@@ -22,7 +22,315 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("FIFA World Cup 2026 Prediction & Interactive Simulation")
+# ============================================================
+# Custom CSS — Sporting Visual Theme
+# ============================================================
+
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;600;700&display=swap');
+
+/* ---- Root variables ---- */
+:root {
+    --green:       #00C853;
+    --green-dark:  #007B30;
+    --green-glow:  rgba(0, 200, 83, 0.18);
+    --gold:        #FFD600;
+    --gold-dark:   #B8980A;
+    --red:         #E53935;
+    --blue:        #1565C0;
+    --surface:     #0D1117;
+    --surface-2:   #161C24;
+    --surface-3:   #1E2730;
+    --border:      rgba(255,255,255,0.08);
+    --text:        #EEF2F7;
+    --text-muted:  #8A9BAD;
+    --radius:      10px;
+}
+
+/* ---- Global ---- */
+html, body, [class*="css"] {
+    font-family: 'Barlow', sans-serif;
+    color: var(--text);
+}
+
+.stApp {
+    background: var(--surface);
+    background-image:
+        radial-gradient(ellipse 80% 40% at 50% -10%, rgba(0,200,83,0.12) 0%, transparent 70%),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 39px,
+            rgba(255,255,255,0.018) 39px,
+            rgba(255,255,255,0.018) 40px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 39px,
+            rgba(255,255,255,0.018) 39px,
+            rgba(255,255,255,0.018) 40px
+        );
+}
+
+/* ---- Title ---- */
+h1 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 3.2rem !important;
+    letter-spacing: 0.05em;
+    background: linear-gradient(90deg, #00C853 0%, #FFD600 60%, #fff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1 !important;
+    margin-bottom: 0 !important;
+}
+
+h2 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.9rem !important;
+    letter-spacing: 0.06em;
+    color: var(--green) !important;
+}
+
+h3 {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-size: 1.25rem !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--gold) !important;
+}
+
+/* ---- Caption / subtitle ---- */
+.stCaption, [data-testid="stCaptionContainer"] p {
+    font-style: italic;
+    color: var(--text-muted) !important;
+}
+
+/* ---- Info / warning / error boxes ---- */
+[data-testid="stAlert"] {
+    border-radius: var(--radius) !important;
+    border-left: 4px solid var(--green) !important;
+    background: rgba(0, 200, 83, 0.07) !important;
+    color: var(--text) !important;
+}
+
+/* ---- Metrics (champion banner) ---- */
+[data-testid="stMetric"] {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--green);
+    border-radius: var(--radius);
+    padding: 18px 16px 14px !important;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+[data-testid="stMetric"]:first-child {
+    border-top-color: var(--gold);
+    box-shadow: 0 0 28px rgba(255, 214, 0, 0.15);
+}
+[data-testid="stMetric"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,200,83,0.18);
+}
+[data-testid="stMetricLabel"] p {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-size: 0.75rem !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted) !important;
+}
+[data-testid="stMetricValue"] {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.8rem !important;
+    color: var(--text) !important;
+}
+
+/* ---- Tabs ---- */
+[data-testid="stTabs"] [role="tablist"] {
+    border-bottom: 2px solid var(--border);
+    gap: 4px;
+}
+[data-testid="stTabs"] button[role="tab"] {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted) !important;
+    border-radius: 6px 6px 0 0 !important;
+    padding: 8px 18px !important;
+    transition: color 0.15s, background 0.15s;
+}
+[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
+    color: var(--green) !important;
+    border-bottom: 3px solid var(--green) !important;
+    background: var(--green-glow) !important;
+}
+[data-testid="stTabs"] button[role="tab"]:hover {
+    color: var(--text) !important;
+    background: var(--surface-3) !important;
+}
+
+/* ---- Containers / cards ---- */
+[data-testid="stVerticalBlockBorderWrapper"],
+div[data-testid="stVerticalBlock"] > div[data-testid="element-container"] > div[style*="border"] {
+    background: var(--surface-2) !important;
+    border-color: var(--border) !important;
+    border-radius: var(--radius) !important;
+}
+
+/* ---- Buttons ---- */
+.stButton > button {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-size: 0.95rem !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%) !important;
+    color: #000 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 8px 18px !important;
+    transition: filter 0.15s, transform 0.1s;
+    box-shadow: 0 2px 12px rgba(0,200,83,0.25);
+}
+.stButton > button:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0,200,83,0.35) !important;
+}
+.stButton > button:active {
+    transform: translateY(0);
+}
+
+/* ---- Download buttons ---- */
+[data-testid="stDownloadButton"] > button {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--surface-3) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 6px !important;
+    transition: border-color 0.15s, background 0.15s;
+}
+[data-testid="stDownloadButton"] > button:hover {
+    border-color: var(--green) !important;
+    background: var(--green-glow) !important;
+    color: var(--green) !important;
+}
+
+/* ---- Selectbox ---- */
+[data-testid="stSelectbox"] > div > div {
+    background: var(--surface-3) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    color: var(--text) !important;
+    font-family: 'Barlow', sans-serif !important;
+}
+
+/* ---- Number input ---- */
+input[type="number"] {
+    background: var(--surface-3) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 6px !important;
+    color: var(--text) !important;
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-size: 1.1rem !important;
+    font-weight: 600;
+    text-align: center;
+}
+input[type="number"]:focus {
+    border-color: var(--green) !important;
+    box-shadow: 0 0 0 2px var(--green-glow) !important;
+}
+
+/* ---- Radio buttons ---- */
+[data-testid="stRadio"] label {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+[data-testid="stRadio"] [data-baseweb="radio"] div:first-child {
+    border-color: var(--green) !important;
+}
+[data-testid="stRadio"] [aria-checked="true"] div:first-child {
+    background-color: var(--green) !important;
+    border-color: var(--green) !important;
+}
+
+/* ---- Dataframes / tables ---- */
+[data-testid="stDataFrame"] {
+    border-radius: var(--radius) !important;
+    overflow: hidden;
+    border: 1px solid var(--border) !important;
+}
+[data-testid="stDataFrame"] thead tr th {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-size: 0.8rem !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--surface-3) !important;
+    color: var(--green) !important;
+    border-bottom: 2px solid var(--green) !important;
+}
+[data-testid="stDataFrame"] tbody tr:nth-child(even) td {
+    background: rgba(255,255,255,0.02) !important;
+}
+[data-testid="stDataFrame"] tbody tr:hover td {
+    background: var(--green-glow) !important;
+}
+
+/* ---- Expanders ---- */
+[data-testid="stExpander"] summary {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text) !important;
+}
+[data-testid="stExpander"] {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    background: var(--surface-2) !important;
+}
+
+/* ---- Divider ---- */
+hr {
+    border-color: var(--border) !important;
+    margin: 24px 0 !important;
+}
+
+/* ---- Sidebar (if used) ---- */
+[data-testid="stSidebar"] {
+    background: var(--surface-2) !important;
+    border-right: 1px solid var(--border) !important;
+}
+
+/* ---- Bold highlights in markdown ---- */
+strong {
+    color: var(--gold) !important;
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--green-dark); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--green); }
+</style>
+""", unsafe_allow_html=True)
+
+
+st.title("⚽ FIFA World Cup 2026 Prediction & Interactive Simulation")
 st.caption(
     "An interactive prediction and scenario simulation tool for exploring FIFA World Cup 2026 outcomes."
 )
@@ -655,10 +963,10 @@ knockout_df, standings = simulate_knockout(qualified_32)
 
 col1, col2, col3, col4 = st.columns(4)
 
-col1.metric("Champion", standings["champion"])
-col2.metric("Runner-up", standings["runner_up"])
-col3.metric("Third Place", standings["third_place"])
-col4.metric("Fourth Place", standings["fourth_place"])
+col1.metric("🏆 Champion", standings["champion"])
+col2.metric("🥈 Runner-up", standings["runner_up"])
+col3.metric("🥉 Third Place", standings["third_place"])
+col4.metric("4️⃣ Fourth Place", standings["fourth_place"])
 
 if TEAM_STRENGTH_FILE is None:
     st.warning(
@@ -669,10 +977,10 @@ st.divider()
 
 
 tab1, tab2, tab3, tab4 = st.tabs([
-    "Group Stage Editor",
-    "Live Group Tables",
-    "Knockout Bracket",
-    "Export",
+    "🖊️ Group Stage Editor",
+    "📊 Live Group Tables",
+    "⚡ Knockout Bracket",
+    "💾 Export",
 ])
 
 

@@ -23,7 +23,7 @@ st.set_page_config(
 )
 
 st.title("FIFA World Cup 2026 Prediction & Interactive Simulation")
-st.captionst.caption(
+st.caption(
     "An interactive prediction and scenario simulation tool for exploring FIFA World Cup 2026 outcomes."
 )
 

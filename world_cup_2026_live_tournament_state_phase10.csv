@@ -1,0 +1,73 @@
+match_id,stage,group,group_letter,matchday,team_a,team_b,model_team_a_win_probability,model_draw_probability,model_team_b_win_probability,model_predicted_winner,model_predicted_result,model_team_a_score,model_team_b_score,actual_team_a_score,actual_team_b_score,manual_team_a_score,manual_team_b_score,match_status,effective_team_a_score,effective_team_b_score,effective_source
+A1,Group Stage,Group A,A,1,Mexico,South Africa,0.494,0.267,0.24,Mexico,Mexico win,2,1,,,,,predicted,2,1,model_prediction
+A2,Group Stage,Group A,A,1,South Korea,Czech Republic,0.346,0.279,0.375,Czech Republic,Czech Republic win,1,2,,,,,predicted,1,2,model_prediction
+A3,Group Stage,Group A,A,2,Mexico,South Korea,0.365,0.289,0.346,Mexico,Mexico win,2,1,,,,,predicted,2,1,model_prediction
+A4,Group Stage,Group A,A,2,Czech Republic,South Africa,0.547,0.253,0.2,Czech Republic,Czech Republic win,2,1,,,,,predicted,2,1,model_prediction
+A5,Group Stage,Group A,A,3,Czech Republic,Mexico,0.436,0.275,0.288,Czech Republic,Czech Republic win,2,1,,,,,predicted,2,1,model_prediction
+A6,Group Stage,Group A,A,3,South Africa,South Korea,0.263,0.285,0.452,South Korea,South Korea win,1,2,,,,,predicted,1,2,model_prediction
+B1,Group Stage,Group B,B,1,Canada,Bosnia and Herzegovina,0.382,0.309,0.309,Canada,Canada win,2,1,,,,,predicted,2,1,model_prediction
+B2,Group Stage,Group B,B,1,Qatar,Switzerland,0.05,0.172,0.778,Switzerland,Switzerland win,0,3,,,,,predicted,0,3,model_prediction
+B3,Group Stage,Group B,B,2,Canada,Qatar,0.713,0.202,0.084,Canada,Canada win,3,0,,,,,predicted,3,0,model_prediction
+B4,Group Stage,Group B,B,2,Switzerland,Bosnia and Herzegovina,0.557,0.254,0.19,Switzerland,Switzerland win,2,0,,,,,predicted,2,0,model_prediction
+B5,Group Stage,Group B,B,3,Switzerland,Canada,0.56,0.233,0.208,Switzerland,Switzerland win,2,0,,,,,predicted,2,0,model_prediction
+B6,Group Stage,Group B,B,3,Bosnia and Herzegovina,Qatar,0.721,0.186,0.093,Bosnia and Herzegovina,Bosnia and Herzegovina win,3,0,,,,,predicted,3,0,model_prediction
+C1,Group Stage,Group C,C,1,Brazil,Haiti,0.836,0.127,0.038,Brazil,Brazil win,3,0,,,,,predicted,3,0,model_prediction
+C2,Group Stage,Group C,C,1,Morocco,Scotland,0.562,0.253,0.185,Morocco,Morocco win,2,0,,,,,predicted,2,0,model_prediction
+C3,Group Stage,Group C,C,2,Brazil,Morocco,0.473,0.264,0.263,Brazil,Brazil win,2,1,,,,,predicted,2,1,model_prediction
+C4,Group Stage,Group C,C,2,Scotland,Haiti,0.658,0.216,0.126,Scotland,Scotland win,2,0,,,,,predicted,2,0,model_prediction
+C5,Group Stage,Group C,C,3,Scotland,Brazil,0.159,0.254,0.588,Brazil,Brazil win,0,2,,,,,predicted,0,2,model_prediction
+C6,Group Stage,Group C,C,3,Haiti,Morocco,0.069,0.187,0.744,Morocco,Morocco win,0,3,,,,,predicted,0,3,model_prediction
+D1,Group Stage,Group D,D,1,United States,Australia,0.463,0.265,0.271,United States,United States win,2,1,,,,,predicted,2,1,model_prediction
+D2,Group Stage,Group D,D,1,Paraguay,Turkey,0.241,0.288,0.471,Turkey,Turkey win,1,2,,,,,predicted,1,2,model_prediction
+D3,Group Stage,Group D,D,2,United States,Paraguay,0.432,0.286,0.281,United States,United States win,2,1,,,,,predicted,2,1,model_prediction
+D4,Group Stage,Group D,D,2,Turkey,Australia,0.571,0.226,0.203,Turkey,Turkey win,2,0,,,,,predicted,2,0,model_prediction
+D5,Group Stage,Group D,D,3,Turkey,United States,0.49,0.249,0.261,Turkey,Turkey win,2,1,,,,,predicted,2,1,model_prediction
+D6,Group Stage,Group D,D,3,Australia,Paraguay,0.353,0.302,0.345,Australia,Australia win,2,1,,,,,predicted,2,1,model_prediction
+E1,Group Stage,Group E,E,1,Germany,Curaçao,0.817,0.132,0.052,Germany,Germany win,3,0,,,,,predicted,3,0,model_prediction
+E2,Group Stage,Group E,E,1,Ivory Coast,Ecuador,0.495,0.267,0.238,Ivory Coast,Ivory Coast win,2,1,,,,,predicted,2,1,model_prediction
+E3,Group Stage,Group E,E,2,Germany,Ivory Coast,0.537,0.241,0.223,Germany,Germany win,2,1,,,,,predicted,2,1,model_prediction
+E4,Group Stage,Group E,E,2,Ecuador,Curaçao,0.637,0.221,0.142,Ecuador,Ecuador win,2,0,,,,,predicted,2,0,model_prediction
+E5,Group Stage,Group E,E,3,Ecuador,Germany,0.165,0.274,0.561,Germany,Germany win,0,2,,,,,predicted,0,2,model_prediction
+E6,Group Stage,Group E,E,3,Curaçao,Ivory Coast,0.104,0.225,0.671,Ivory Coast,Ivory Coast win,0,2,,,,,predicted,0,2,model_prediction
+F1,Group Stage,Group F,F,1,Netherlands,Japan,0.333,0.284,0.382,Japan,Japan win,1,2,,,,,predicted,1,2,model_prediction
+F2,Group Stage,Group F,F,1,Sweden,Tunisia,0.509,0.244,0.247,Sweden,Sweden win,2,1,,,,,predicted,2,1,model_prediction
+F3,Group Stage,Group F,F,2,Netherlands,Sweden,0.384,0.306,0.31,Netherlands,Netherlands win,2,1,,,,,predicted,2,1,model_prediction
+F4,Group Stage,Group F,F,2,Tunisia,Japan,0.223,0.272,0.506,Japan,Japan win,1,2,,,,,predicted,1,2,model_prediction
+F5,Group Stage,Group F,F,3,Tunisia,Netherlands,0.264,0.278,0.458,Netherlands,Netherlands win,1,2,,,,,predicted,1,2,model_prediction
+F6,Group Stage,Group F,F,3,Japan,Sweden,0.432,0.299,0.269,Japan,Japan win,2,1,,,,,predicted,2,1,model_prediction
+G1,Group Stage,Group G,G,1,Belgium,Egypt,0.575,0.254,0.171,Belgium,Belgium win,2,0,,,,,predicted,2,0,model_prediction
+G2,Group Stage,Group G,G,1,Iran,New Zealand,0.629,0.214,0.158,Iran,Iran win,2,0,,,,,predicted,2,0,model_prediction
+G3,Group Stage,Group G,G,2,Belgium,Iran,0.697,0.206,0.097,Belgium,Belgium win,2,0,,,,,predicted,2,0,model_prediction
+G4,Group Stage,Group G,G,2,New Zealand,Egypt,0.104,0.23,0.666,Egypt,Egypt win,0,2,,,,,predicted,0,2,model_prediction
+G5,Group Stage,Group G,G,3,New Zealand,Belgium,0.041,0.165,0.794,Belgium,Belgium win,0,3,,,,,predicted,0,3,model_prediction
+G6,Group Stage,Group G,G,3,Egypt,Iran,0.511,0.272,0.217,Egypt,Egypt win,2,1,,,,,predicted,2,1,model_prediction
+H1,Group Stage,Group H,H,1,Cape Verde Islands,Saudi Arabia,0.469,0.275,0.256,Cape Verde Islands,Cape Verde Islands win,2,1,,,,,predicted,2,1,model_prediction
+H2,Group Stage,Group H,H,1,Spain,Uruguay,0.621,0.226,0.153,Spain,Spain win,2,0,,,,,predicted,2,0,model_prediction
+H3,Group Stage,Group H,H,2,Cape Verde Islands,Spain,0.079,0.214,0.706,Spain,Spain win,0,3,,,,,predicted,0,3,model_prediction
+H4,Group Stage,Group H,H,2,Uruguay,Saudi Arabia,0.66,0.214,0.127,Uruguay,Uruguay win,2,0,,,,,predicted,2,0,model_prediction
+H5,Group Stage,Group H,H,3,Uruguay,Cape Verde Islands,0.583,0.237,0.18,Uruguay,Uruguay win,2,0,,,,,predicted,2,0,model_prediction
+H6,Group Stage,Group H,H,3,Saudi Arabia,Spain,0.053,0.182,0.765,Spain,Spain win,0,3,,,,,predicted,0,3,model_prediction
+I1,Group Stage,Group I,I,1,France,Norway,0.511,0.258,0.232,France,France win,2,1,,,,,predicted,2,1,model_prediction
+I2,Group Stage,Group I,I,1,Senegal,Iraq,0.751,0.163,0.086,Senegal,Senegal win,3,0,,,,,predicted,3,0,model_prediction
+I3,Group Stage,Group I,I,2,France,Senegal,0.58,0.237,0.184,France,France win,2,0,,,,,predicted,2,0,model_prediction
+I4,Group Stage,Group I,I,2,Iraq,Norway,0.071,0.224,0.705,Norway,Norway win,0,3,,,,,predicted,0,3,model_prediction
+I5,Group Stage,Group I,I,3,Iraq,France,0.043,0.191,0.766,France,France win,0,3,,,,,predicted,0,3,model_prediction
+I6,Group Stage,Group I,I,3,Norway,Senegal,0.452,0.27,0.278,Norway,Norway win,2,1,,,,,predicted,2,1,model_prediction
+J1,Group Stage,Group J,J,1,Argentina,Algeria,0.609,0.232,0.159,Argentina,Argentina win,2,0,,,,,predicted,2,0,model_prediction
+J2,Group Stage,Group J,J,1,Austria,Jordan,0.743,0.171,0.086,Austria,Austria win,3,0,,,,,predicted,3,0,model_prediction
+J3,Group Stage,Group J,J,2,Argentina,Austria,0.519,0.27,0.211,Argentina,Argentina win,2,1,,,,,predicted,2,1,model_prediction
+J4,Group Stage,Group J,J,2,Jordan,Algeria,0.135,0.245,0.621,Algeria,Algeria win,0,2,,,,,predicted,0,2,model_prediction
+J5,Group Stage,Group J,J,3,Jordan,Argentina,0.07,0.192,0.738,Argentina,Argentina win,0,3,,,,,predicted,0,3,model_prediction
+J6,Group Stage,Group J,J,3,Algeria,Austria,0.296,0.299,0.405,Austria,Austria win,1,2,,,,,predicted,1,2,model_prediction
+K1,Group Stage,Group K,K,1,Portugal,Congo DR,0.604,0.234,0.161,Portugal,Portugal win,2,0,,,,,predicted,2,0,model_prediction
+K2,Group Stage,Group K,K,1,Uzbekistan,Colombia,0.206,0.287,0.507,Colombia,Colombia win,1,2,,,,,predicted,1,2,model_prediction
+K3,Group Stage,Group K,K,2,Portugal,Uzbekistan,0.748,0.171,0.082,Portugal,Portugal win,3,0,,,,,predicted,3,0,model_prediction
+K4,Group Stage,Group K,K,2,Colombia,Congo DR,0.403,0.274,0.323,Colombia,Colombia win,2,1,,,,,predicted,2,1,model_prediction
+K5,Group Stage,Group K,K,3,Colombia,Portugal,0.203,0.262,0.535,Portugal,Portugal win,1,2,,,,,predicted,1,2,model_prediction
+K6,Group Stage,Group K,K,3,Congo DR,Uzbekistan,0.57,0.239,0.191,Congo DR,Congo DR win,2,0,,,,,predicted,2,0,model_prediction
+L1,Group Stage,Group L,L,1,England,Croatia,0.551,0.243,0.206,England,England win,2,0,,,,,predicted,2,0,model_prediction
+L2,Group Stage,Group L,L,1,Ghana,Panama,0.469,0.263,0.268,Ghana,Ghana win,2,1,,,,,predicted,2,1,model_prediction
+L3,Group Stage,Group L,L,2,England,Ghana,0.738,0.18,0.082,England,England win,3,0,,,,,predicted,3,0,model_prediction
+L4,Group Stage,Group L,L,2,Panama,Croatia,0.137,0.241,0.623,Croatia,Croatia win,0,2,,,,,predicted,0,2,model_prediction
+L5,Group Stage,Group L,L,3,Panama,England,0.068,0.201,0.731,England,England win,0,3,,,,,predicted,0,3,model_prediction
+L6,Group Stage,Group L,L,3,Croatia,Ghana,0.6,0.244,0.156,Croatia,Croatia win,2,0,,,,,predicted,2,0,model_prediction

@@ -1,4 +1,4 @@
-# FIFA World Cup 2026 Prediction & Business Scenario Simulator
+# FIFA World Cup 2026 Prediction
 
 Live App: https://amit-world-cup-2026-simulator.streamlit.app/
 

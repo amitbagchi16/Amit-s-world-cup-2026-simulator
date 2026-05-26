@@ -344,11 +344,11 @@ st.info(
 with st.expander("Why this matters"):
     st.write(
         """
-        Large sporting events create uncertainty for fans, media platforms, sponsors, advertisers, and merchandise sellers. 
+        Large sporting events create uncertainty for fans, media platforms, sponsors, advertisers, and merchandise sellers.
         A prediction simulator can help users understand how tournament outcomes may change as real results become available.
 
-        For example, before the tournament, a team may appear as a likely champion based on available data. 
-        After each match, updated results can change the group ranking, knockout path, and final prediction. 
+        For example, before the tournament, a team may appear as a likely champion based on available data.
+        After each match, updated results can change the group ranking, knockout path, and final prediction.
         This makes the tool useful not only for football analysis, but also for scenario-based planning.
         """
     )
@@ -515,22 +515,17 @@ if "group_letter" not in original_state.columns:
 def build_strength_dict(team_strength_df):
     if team_strength_df is None:
         return {}
-
     if "nation" not in team_strength_df.columns:
         return {}
-
     if "composite_team_strength" not in team_strength_df.columns:
         return {}
 
     strength = {}
-
     for _, row in team_strength_df.iterrows():
         team = row["nation"]
         value = row["composite_team_strength"]
-
         if pd.notna(team) and pd.notna(value):
             strength[team] = float(value)
-
     return strength
 
 
@@ -540,11 +535,8 @@ team_strength_dict = build_strength_dict(team_strength)
 def get_team_strength(team):
     if team in team_strength_dict:
         return team_strength_dict[team]
-
-    # Conservative fallback if strength is missing
     if len(team_strength_dict) > 0:
         return np.percentile(list(team_strength_dict.values()), 25)
-
     return 50.0
 
 
@@ -587,7 +579,118 @@ def refresh_effective_results(state_df):
     return state_df
 
 
+# ============================================================
+# FIFA tiebreaker helpers
+# ============================================================
+
+def _build_stats_for_teams(teams, matches):
+    """
+    Compute points, goal difference, and goals scored restricted
+    only to matches played among the given subset of teams.
+    Used for head-to-head sub-table calculations.
+    """
+    stats = {t: {"points": 0, "goal_difference": 0, "goals_for": 0} for t in teams}
+    team_set = set(teams)
+
+    for _, match in matches.iterrows():
+        ta = match["team_a"]
+        tb = match["team_b"]
+        if ta not in team_set or tb not in team_set:
+            continue
+
+        sa = int(match["effective_team_a_score"])
+        sb = int(match["effective_team_b_score"])
+
+        stats[ta]["goals_for"] += sa
+        stats[tb]["goals_for"] += sb
+        stats[ta]["goal_difference"] += sa - sb
+        stats[tb]["goal_difference"] += sb - sa
+
+        if sa > sb:
+            stats[ta]["points"] += 3
+        elif sb > sa:
+            stats[tb]["points"] += 3
+        else:
+            stats[ta]["points"] += 1
+            stats[tb]["points"] += 1
+
+    return stats
+
+
+def _sort_key_h2h(team, h2h):
+    s = h2h[team]
+    return (s["points"], s["goal_difference"], s["goals_for"])
+
+
+def _fifa_sort_group(teams_subset, overall_df, group_matches):
+    """
+    Recursively sort a tied cluster of teams using the official
+    FIFA 2026 tiebreaker sequence:
+      1. H2H points among tied teams
+      2. H2H goal difference among tied teams
+      3. H2H goals scored among tied teams
+         -> if still tied, repeat 1-3 for only those remaining tied teams
+      4. Overall goal difference
+      5. Overall goals scored
+      6. Alphabetical fallback (stands in for fair play / FIFA ranking)
+    Returns a sorted list of team names, best first.
+    """
+    if len(teams_subset) <= 1:
+        return list(teams_subset)
+
+    h2h = _build_stats_for_teams(teams_subset, group_matches)
+    h2h_sorted = sorted(
+        teams_subset,
+        key=lambda t: _sort_key_h2h(t, h2h),
+        reverse=True,
+    )
+
+    result = []
+    i = 0
+    while i < len(h2h_sorted):
+        j = i + 1
+        while j < len(h2h_sorted) and (
+            _sort_key_h2h(h2h_sorted[j], h2h) == _sort_key_h2h(h2h_sorted[i], h2h)
+        ):
+            j += 1
+
+        cluster = h2h_sorted[i:j]
+
+        if len(cluster) == 1:
+            result.extend(cluster)
+        elif len(cluster) < len(teams_subset):
+            # Smaller sub-cluster still tied — recurse
+            result.extend(_fifa_sort_group(cluster, overall_df, group_matches))
+        else:
+            # All teams still tied after H2H — fall through to overall criteria
+            overall_sorted = sorted(
+                cluster,
+                key=lambda t: (
+                    overall_df.loc[overall_df["team"] == t, "goal_difference"].values[0],
+                    overall_df.loc[overall_df["team"] == t, "goals_for"].values[0],
+                    t,  # alphabetical as final fallback
+                ),
+                reverse=True,
+            )
+            result.extend(overall_sorted)
+
+        i = j
+
+    return result
+
+
 def calculate_group_tables(state_df):
+    # ----------------------------------------------------------------
+    # Official FIFA 2026 tiebreaker order (group stage):
+    #   1. Points
+    #   2. Head-to-head points (among tied teams)
+    #   3. Head-to-head goal difference (among tied teams)
+    #   4. Head-to-head goals scored (among tied teams)
+    #      -> if still tied, repeat 2-4 for only those remaining tied teams
+    #   5. Overall goal difference
+    #   6. Overall goals scored
+    #   7. Fair play / FIFA ranking (approximated by alphabetical fallback)
+    # ----------------------------------------------------------------
     all_tables = []
 
     for group_name, group_matches in state_df.groupby("group", sort=False):
@@ -596,7 +699,6 @@ def calculate_group_tables(state_df):
         )
 
         table = {}
-
         for team in teams:
             table[team] = {
                 "team": team,
@@ -613,16 +715,13 @@ def calculate_group_tables(state_df):
         for _, match in group_matches.iterrows():
             team_a = match["team_a"]
             team_b = match["team_b"]
-
             score_a = int(match["effective_team_a_score"])
             score_b = int(match["effective_team_b_score"])
 
             table[team_a]["played"] += 1
             table[team_b]["played"] += 1
-
             table[team_a]["goals_for"] += score_a
             table[team_a]["goals_against"] += score_b
-
             table[team_b]["goals_for"] += score_b
             table[team_b]["goals_against"] += score_a
 
@@ -630,12 +729,10 @@ def calculate_group_tables(state_df):
                 table[team_a]["wins"] += 1
                 table[team_b]["losses"] += 1
                 table[team_a]["points"] += 3
-
             elif score_a < score_b:
                 table[team_b]["wins"] += 1
                 table[team_a]["losses"] += 1
                 table[team_b]["points"] += 3
-
             else:
                 table[team_a]["draws"] += 1
                 table[team_b]["draws"] += 1
@@ -645,20 +742,48 @@ def calculate_group_tables(state_df):
             table[team_a]["goal_difference"] = (
                 table[team_a]["goals_for"] - table[team_a]["goals_against"]
             )
-
             table[team_b]["goal_difference"] = (
                 table[team_b]["goals_for"] - table[team_b]["goals_against"]
             )
 
-        group_table = pd.DataFrame(table.values())
-        group_table["group"] = group_name
-        group_table["group_letter"] = str(group_name).replace("Group ", "")
+        overall_df = pd.DataFrame(table.values())
 
-        group_table = group_table.sort_values(
+        # Sort by overall points first (step 1)
+        overall_df = overall_df.sort_values(
             by=["points", "goal_difference", "goals_for"],
             ascending=[False, False, False],
         ).reset_index(drop=True)
 
+        # Within equal-points clusters, apply full FIFA H2H tiebreaker chain
+        sorted_teams = []
+        i = 0
+        while i < len(overall_df):
+            pts = overall_df.iloc[i]["points"]
+            j = i + 1
+            while j < len(overall_df) and overall_df.iloc[j]["points"] == pts:
+                j += 1
+
+            cluster_teams = list(overall_df.iloc[i:j]["team"])
+
+            if len(cluster_teams) == 1:
+                sorted_teams.extend(cluster_teams)
+            else:
+                sorted_teams.extend(
+                    _fifa_sort_group(cluster_teams, overall_df, group_matches)
+                )
+            i = j
+
+        # Rebuild DataFrame in correct final order
+        team_order = {team: idx for idx, team in enumerate(sorted_teams)}
+        overall_df["_order"] = overall_df["team"].map(team_order)
+        group_table = (
+            overall_df.sort_values("_order")
+            .drop(columns=["_order"])
+            .reset_index(drop=True)
+        )
+
+        group_table["group"] = group_name
+        group_table["group_letter"] = str(group_name).replace("Group ", "")
         group_table["group_position"] = group_table.index + 1
 
         all_tables.append(group_table)
@@ -670,9 +795,11 @@ def calculate_qualified_32(group_tables):
     top_two = group_tables[group_tables["group_position"] <= 2].copy()
     third_placed = group_tables[group_tables["group_position"] == 3].copy()
 
+    # Official FIFA tiebreaker for ranking third-placed teams across groups:
+    # points -> goal difference -> goals scored -> alphabetical fallback
     best_third = third_placed.sort_values(
-        by=["points", "goal_difference", "goals_for"],
-        ascending=[False, False, False],
+        by=["points", "goal_difference", "goals_for", "team"],
+        ascending=[False, False, False, True],
     ).head(8).copy()
 
     top_two["qualification_type"] = "Top 2"
@@ -708,10 +835,8 @@ def get_team(qualified, group_letter, position):
         (qualified["group_letter"] == group_letter)
         & (qualified["group_position"] == position)
     ]
-
     if row.empty:
         return None
-
     return row.iloc[0]["team"]
 
 
@@ -724,7 +849,6 @@ def assign_third_placed_teams(qualified):
     ).reset_index(drop=True)
 
     third_pool["third_rank"] = third_pool.index + 1
-
     third_records = third_pool.to_dict("records")
 
     assignments = {}
